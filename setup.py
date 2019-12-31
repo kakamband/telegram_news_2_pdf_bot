@@ -1,29 +1,38 @@
-import setuptools
+import os
+import sys
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+def kill():
+	os.system("ps aux | grep ython | grep loop_pdf | awk '{print $2}' | xargs kill -9")
 
-setuptools.setup(
-    name="news_2_pdf",
-    version="0.0.2",
-    author="Yunzhi Gao",
-    author_email="gaoyunzhi@gmail.com",
-    description="Generate international news in pdf.",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
-    url="https://github.com/gaoyunzhi/news_2_pdf",
-    packages=setuptools.find_packages(),
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    install_requires=[
-        'bs4',
-        'telegram_util>=0.0.27',
-        'cached_url>=0.0.1',
-        'pyyaml',
-        'readee>=0.0.14'
-    ],
-    python_requires='>=3.0',
-)
+def setup(arg = ''):
+	if arg == 'kill':
+		kill()
+		return 
+
+	RUN_COMMAND = 'nohup python3 -u loop_pdf.py &'
+	
+	if arg != 'debug':
+		r = os.system('sudo pip3 install -r requirements.txt')
+		if r != 0:
+			os.system('curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py')
+			os.system('sudo python3 get-pip.py')
+			os.system('rm get-pip.py')
+			os.system('sudo pip3 install -r requirements.txt')
+		
+	try:
+		from telegram.ext import Updater, MessageHandler, Filters
+	except:
+		os.system('sudo pip3 install python-telegram-bot --upgrade') # need to use some experiement feature, e.g. message filtering
+
+	kill()
+	if arg.startswith('debug'):
+		os.system(RUN_COMMAND[6:-2])
+	else:
+		os.system(RUN_COMMAND)
+
+
+if __name__ == '__main__':
+	if len(sys.argv) > 1:
+		setup(sys.argv[1])
+	else:
+		setup('')

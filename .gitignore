@@ -1,6 +1,9 @@
+*CREDENTIALS*
 *tmp*
-*html_result*
-*build*
-*dist*
-*egg-info*
+*nohup*
+*message_log*
 *pycache*
+*update_time.yaml*
+*queue.yaml*
+*html_result*
+*pdf_result*

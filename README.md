@@ -1,15 +1,3 @@
-# news_2_pdf
+# news_2_pdf_bot
 
-Generate international news in pdf. For people with limited access to internet.
-
-## usage
-
-```
-import news_2_pdf
-new_2_pdg.gen()
-```
-
-## how to install
-
-`sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin` 
-`pip3 install news_2_pdf`
+Support Telegram Channel: https://t.me/news_pdf

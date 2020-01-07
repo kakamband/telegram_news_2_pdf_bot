@@ -20,8 +20,8 @@ channel = tele.bot.get_chat(-1001371029868)
 @log_on_fail(debug_group)
 def loopImp():
     file1 = news_2_pdf.gen(news_source='bbc')
-    channel.send_document(document=open(file1, 'rb'), timeout=TIMEOUT)
     file2 = news_2_pdf.gen(news_source='nyt')
+    channel.send_document(document=open(file1, 'rb'), timeout=TIMEOUT)
     channel.send_document(document=open(file2, 'rb'), timeout=TIMEOUT)
 
 def loop():

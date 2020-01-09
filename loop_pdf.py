@@ -23,7 +23,7 @@ def loopImp():
 	files = []
 	for s in sources:
 		files.append(news_2_pdf.gen(news_source=s))
-	for f in files:
+	for f in files[::-1]:
 		channel.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
 
 def loop():

@@ -11,7 +11,7 @@ DAY = 60 * 60 * 24
 TIMEOUT = 20 * 60
 
 with open('CREDENTIALS') as f:
-    CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
+	CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
 
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
@@ -23,11 +23,11 @@ def loopImp():
 	files = []
 	for s in sources:
 		files.append(news_2_pdf.gen(news_source=s))
-    for f in files:
-    	channel.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
+	for f in files:
+		channel.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
 
 def loop():
-    loopImp()
-    threading.Timer(DAY, loop).start() 
+	loopImp()
+	threading.Timer(DAY, loop).start() 
 
 threading.Timer(1, loop).start()

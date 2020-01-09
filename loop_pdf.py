@@ -8,7 +8,7 @@ from telegram_util import log_on_fail
 import news_2_pdf
 
 DAY = 60 * 60 * 24
-TIMEOUT = 10 * 60
+TIMEOUT = 20 * 60
 
 with open('CREDENTIALS') as f:
     CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)

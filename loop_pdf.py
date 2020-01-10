@@ -15,16 +15,23 @@ with open('CREDENTIALS') as f:
 
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
-channel = tele.bot.get_chat(-1001371029868)
+channel_pdf = tele.bot.get_chat(-1001371029868)
+channel_en = tele.bot.get_chat(-1001414226421)
 
 @log_on_fail(debug_group)
 def loopImp():
 	sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 	files = []
+	files_en = []
 	for s in sources:
-		files.append(news_2_pdf.gen(news_source=s))
+		f = news_2_pdf.gen(news_source=s)
+		files.append(f)
+		if '英文' in s:
+			files_en.append(f)
 	for f in files[::-1]:
-		channel.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
+		channel_pdf.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
+	for f in files_en:
+		channel_en.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
 
 def loop():
 	loopImp()

@@ -6,6 +6,7 @@ import threading
 from telegram.ext import Updater
 from telegram_util import log_on_fail
 import news_2_pdf
+import channel2pdf
 
 DAY = 60 * 60 * 24
 TIMEOUT = 20 * 60
@@ -27,6 +28,11 @@ def loopImp():
 		f = news_2_pdf.gen(news_source=s)
 		files.append(f)
 		if '英文' in s:
+			files_en.append(f)
+	for s in ['social_justice_watch', 'equality_and_rights']:
+		f = channel2pdf.gen(s)
+		files.append(f)
+		if 'social_justice_watch' in s:
 			files_en.append(f)
 	for f in files[::-1]:
 		channel_pdf.send_document(document=open(f, 'rb'), timeout=TIMEOUT)

@@ -29,7 +29,7 @@ def loopImp():
 		files.append(f)
 		if '英文' in s:
 			files_en.append(f)
-	for s in ['social_justice_watch', 'equality_and_rights']:
+	for s in ['social_justice_watch', 'equality_and_rights', 'pincongessence']:
 		f = channel2pdf.gen(s)
 		files.append(f)
 		if 'social_justice_watch' in s:
@@ -43,17 +43,15 @@ def loop():
 	loopImp()
 	threading.Timer(DAY, loop).start() 
 
-threading.Timer(DAY, loop).start()
+threading.Timer(1, loop).start()
 
 @log_on_fail(debug_group)
 def export(update, context):
-	print('here')
 	channel_name = update.message.text
 	if not channel_name:
 		return
-	print('here2')
+	channel_name = channel_name.split('/')[-1]
 	f = channel2pdf.gen(update.message.text)
-	print(f)
 	update.message.reply_document(document=open(f, 'rb'), timeout=TIMEOUT)
 
 tele.dispatcher.add_handler(MessageHandler(Filters.text & Filters.private, export))

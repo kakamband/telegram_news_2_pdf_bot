@@ -3,7 +3,7 @@
 
 import yaml
 import threading
-from telegram.ext import Updater
+from telegram.ext import Updater, MessageHandler, Filters
 from telegram_util import log_on_fail
 import news_2_pdf
 import channel2pdf
@@ -47,10 +47,13 @@ threading.Timer(DAY, loop).start()
 
 @log_on_fail(debug_group)
 def export(update, context):
+	print('here')
 	channel_name = update.message.text
 	if not channel_name:
 		return
+	print('here2')
 	f = channel2pdf.gen(update.message.text)
+	print(f)
 	update.message.reply_document(document=open(f, 'rb'), timeout=TIMEOUT)
 
 tele.dispatcher.add_handler(MessageHandler(Filters.text & Filters.private, export))

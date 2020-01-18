@@ -43,4 +43,17 @@ def loop():
 	loopImp()
 	threading.Timer(DAY, loop).start() 
 
-threading.Timer(1, loop).start()
+threading.Timer(DAY, loop).start()
+
+@log_on_fail(debug_group)
+def export(update, context):
+	channel_name = update.message.text
+	if not channel_name:
+		return
+	f = channel2pdf.gen(update.message.text)
+	update.message.reply_document(document=open(f, 'rb'), timeout=TIMEOUT)
+
+tele.dispatcher.add_handler(MessageHandler(Filters.text & Filters.private, export))
+
+tele.start_polling()
+tele.idle()

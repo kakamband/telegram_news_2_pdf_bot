@@ -1,4 +1,4 @@
-news_2_pdf>=0.0.11
+news_2_pdf>=0.0.13
 python-telegram-bot
 pyyaml
 telegram_util>=0.0.28

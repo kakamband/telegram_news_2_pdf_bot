@@ -12,12 +12,12 @@ def setup(arg = ''):
 	RUN_COMMAND = 'nohup python3 -u loop_pdf.py &'
 	
 	if arg != 'debug':
-		r = os.system('pip3 install -r requirements.txt')
+		r = os.system('pip3 install --user -r requirements.txt')
 		if r != 0:
 			os.system('curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py')
 			os.system('python3 get-pip.py')
 			os.system('rm get-pip.py')
-			os.system('sudo pip3 install -r requirements.txt')
+			os.system('pip3 install --user -r requirements.txt')
 		
 	try:
 		from telegram.ext import Updater, MessageHandler, Filters

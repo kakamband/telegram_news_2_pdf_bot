@@ -9,7 +9,7 @@ import news_2_pdf
 import channel2pdf
 
 DAY = 60 * 60 * 24
-TIMEOUT = 20 * 60
+TIMEOUT = 40 * 60
 
 with open('CREDENTIALS') as f:
 	CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -18,6 +18,13 @@ tele = Updater(CREDENTIALS['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(-1001198682178)
 channel_pdf = tele.bot.get_chat(-1001371029868)
 channel_en = tele.bot.get_chat(-1001414226421)
+
+def sendAll(c, files):
+	for f in files:
+		try:
+			c.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
+		except Exception as e:
+			debug_group.send_message(str(e))
 
 @log_on_fail(debug_group)
 def loopImp():
@@ -34,10 +41,8 @@ def loopImp():
 		files.append(f)
 		if 'social_justice_watch' in s:
 			files_en.append(f)
-	for f in files[::-1]:
-		channel_pdf.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
-	for f in files_en:
-		channel_en.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
+	sendAll(channel_pdf, files[::-1])
+	sendAll(channel_en, files_en)
 
 def loop():
 	loopImp()

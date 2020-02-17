@@ -8,6 +8,13 @@ from telegram_util import log_on_fail
 import news_2_pdf
 import channel2pdf
 
+TO_EXPORT = [
+	'social_justice_watch', 
+	'equality_and_rights', 
+	'pincongessence', 
+	'freedom_watch',
+]
+
 DAY = 60 * 60 * 24
 TIMEOUT = 40 * 60
 
@@ -36,7 +43,7 @@ def loopImp():
 		files.append(f)
 		if '英文' in s:
 			files_en.append(f)
-	for s in ['social_justice_watch', 'equality_and_rights', 'pincongessence']:
+	for s in TO_EXPORT:
 		f = channel2pdf.gen(s)
 		files.append(f)
 		if 'social_justice_watch' in s:

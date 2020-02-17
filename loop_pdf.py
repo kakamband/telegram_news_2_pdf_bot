@@ -43,11 +43,12 @@ def loopImp():
 		files.append(f)
 		if '英文' in s:
 			files_en.append(f)
-	for s in TO_EXPORT:
-		f = channel2pdf.gen(s)
-		files.append(f)
-		if 'social_justice_watch' in s:
-			files_en.append(f)
+	day = int(time.time() / 24 / 60 / 60)
+	s = TO_EXPORT[day % len(TO_EXPORT)]
+	f = channel2pdf.gen(s)
+	files.append(f)
+	if 'social_justice_watch' == s:
+		files_en.append(f)
 	sendAll(channel_pdf, files[::-1])
 	sendAll(channel_en, files_en)
 

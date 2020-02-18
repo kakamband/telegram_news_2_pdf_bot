@@ -7,6 +7,7 @@ from telegram.ext import Updater, MessageHandler, Filters
 from telegram_util import log_on_fail
 import news_2_pdf
 import channel2pdf
+import time
 
 TO_EXPORT = [
 	'social_justice_watch', 

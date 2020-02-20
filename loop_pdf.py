@@ -10,10 +10,11 @@ import channel2pdf
 import time
 
 TO_EXPORT = [
-	'social_justice_watch', 
-	'equality_and_rights', 
-	'pincongessence', 
-	'freedom_watch',
+	# 'social_justice_watch', 
+	# 'equality_and_rights', 
+	# 'pincongessence', 
+	# 'freedom_watch',
+	'reading_study',
 ]
 
 DAY = 60 * 60 * 24
@@ -36,7 +37,7 @@ def sendAll(c, files):
 
 @log_on_fail(debug_group)
 def loopImp():
-	sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
+	sources = [] # ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 	files = []
 	files_en = []
 	for s in sources:

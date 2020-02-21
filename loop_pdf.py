@@ -38,26 +38,26 @@ def sendAll(c, files):
 
 @log_on_fail(debug_group)
 def loopImp():
-	sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
-	files = []
-	files_en = []
-	for s in sources:
-		f = news_2_pdf.gen(news_source=s)
-		files.append(f)
-		if '英文' in s:
-			files_en.append(f)
-	day = int(time.time() / 24 / 60 / 60)
-	s = TO_EXPORT[day % len(TO_EXPORT)]
-	f = channel2pdf.gen(s)
-	files.append(f)
-	if 'social_justice_watch' == s:
-		files_en.append(f)
-	sendAll(channel_pdf, files[::-1])
-	sendAll(channel_en, files_en)
+	# sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
+	# files = []
+	# files_en = []
+	# for s in sources:
+	# 	f = news_2_pdf.gen(news_source=s)
+	# 	files.append(f)
+	# 	if '英文' in s:
+	# 		files_en.append(f)
+	# day = int(time.time() / 24 / 60 / 60)
+	# s = TO_EXPORT[day % len(TO_EXPORT)]
+	# f = channel2pdf.gen(s)
+	# files.append(f)
+	# if 'social_justice_watch' == s:
+	# 	files_en.append(f)
+	# sendAll(channel_pdf, files[::-1])
+	# sendAll(channel_en, files_en)
 	for x in os.listdir('pdf_result'):
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
 			os.system('rm pdf_result/' + x)
-	os.system('gcm')
+	os.system('git add . && git commit -m commit && git push -u -f')
 
 def loop():
 	loopImp()

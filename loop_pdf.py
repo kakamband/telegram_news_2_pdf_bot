@@ -9,6 +9,7 @@ import news_2_pdf
 import channel2pdf
 import time
 import os
+import datetime
 
 TO_EXPORT = [
 	'social_justice_watch', 
@@ -16,10 +17,11 @@ TO_EXPORT = [
 	'pincongessence', 
 	'freedom_watch',
 	'reading_study',
+	'equality_and_rights',
 ]
 
-DAY = 60 * 60 * 24
 TIMEOUT = 40 * 60
+excuted = set()
 
 with open('CREDENTIALS') as f:
 	CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
@@ -38,6 +40,12 @@ def sendAll(c, files):
 
 @log_on_fail(debug_group)
 def loopImp():
+	now = datetime.datetime.now()
+	if (now.month, now.day) in excuted:
+		return
+	else:
+		excuted.add((now.month, now.day))
+	print('%d/%d %d:%d' % (now.month, now.day, now.hour, now.minute))
 	sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 	files = []
 	files_en = []
@@ -61,7 +69,7 @@ def loopImp():
 
 def loop():
 	loopImp()
-	threading.Timer(DAY, loop).start() 
+	threading.Timer(60 * 10, loop).start() 
 
 threading.Timer(1, loop).start()
 

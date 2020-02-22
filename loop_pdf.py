@@ -10,6 +10,8 @@ import channel2pdf
 import time
 import os
 import datetime
+import sendgrid
+from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
 
 TO_EXPORT = [
 	'social_justice_watch', 
@@ -38,34 +40,49 @@ def sendAll(c, files):
 		except Exception as e:
 			debug_group.send_message(str(e))
 
+def sendEmail():
+	print('sending')
+	now = datetime.datetime.now()
+	sg = sendgrid.SendGridAPIClient(CREDENTIALS['email_key'])
+	from_email = Email(CREDENTIALS['sender'])
+	to_email = To(CREDENTIALS['to'])
+	content = Content("text/plain", "no content")
+	mail = Mail(subject='%d%s 【新闻播报】' % (now.month, now.day),
+		html_content='书友好！今天的新闻播报已经生成，请至 https://github.com/gaoyunzhi/telegram_news_2_pdf_bot/tree/master/pdf_result 领取。',
+		from_email=from_email,
+		to_emails=[to_email],
+		)
+	print('sent')
+
 @log_on_fail(debug_group)
 def loopImp():
-	now = datetime.datetime.now()
-	if (now.month, now.day) in excuted:
-		return
-	else:
-		excuted.add((now.month, now.day))
-	print('%d/%d %d:%d' % (now.month, now.day, now.hour, now.minute))
-	sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
-	files = []
-	files_en = []
-	for s in sources:
-		f = news_2_pdf.gen(news_source=s)
-		files.append(f)
-		if '英文' in s:
-			files_en.append(f)
-	day = int(time.time() / 24 / 60 / 60)
-	s = TO_EXPORT[day % len(TO_EXPORT)]
-	f = channel2pdf.gen(s)
-	files.append(f)
-	if 'social_justice_watch' == s:
-		files_en.append(f)
-	sendAll(channel_pdf, files[::-1])
-	sendAll(channel_en, files_en)
-	for x in os.listdir('pdf_result'):
-		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
-			os.system('rm pdf_result/' + x)
-	os.system('git add . && git commit -m commit && git push -u -f')
+	# now = datetime.datetime.now()
+	# if (now.month, now.day) in excuted:
+	# 	return
+	# else:
+	# 	excuted.add((now.month, now.day))
+	# print('%d/%d %d:%d' % (now.month, now.day, now.hour, now.minute))
+	# sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
+	# files = []
+	# files_en = []
+	# for s in sources:
+	# 	f = news_2_pdf.gen(news_source=s)
+	# 	files.append(f)
+	# 	if '英文' in s:
+	# 		files_en.append(f)
+	# day = int(time.time() / 24 / 60 / 60)
+	# s = TO_EXPORT[day % len(TO_EXPORT)]
+	# f = channel2pdf.gen(s)
+	# files.append(f)
+	# if 'social_justice_watch' == s:
+	# 	files_en.append(f)
+	# sendAll(channel_pdf, files[::-1])
+	# sendAll(channel_en, files_en)
+	# for x in os.listdir('pdf_result'):
+	# 	if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
+	# 		os.system('rm pdf_result/' + x)
+	# os.system('git add . && git commit -m commit && git push -u -f')
+	sendEmail()
 
 def loop():
 	loopImp()

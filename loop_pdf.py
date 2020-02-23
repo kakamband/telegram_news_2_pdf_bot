@@ -45,12 +45,12 @@ def sendEmail():
 	now = datetime.datetime.now()
 	sg = sendgrid.SendGridAPIClient(CREDENTIALS['email_key'])
 	from_email = Email(CREDENTIALS['sender'])
-	to_email = To(CREDENTIALS['to'])
+	to_emails = [To(x) for x in CREDENTIALS['to']]
 	content = Content("text/plain", "no content")
 	mail = Mail(subject='%s 【新闻播报】' % date.today().strftime("%m%d"),
 		html_content='书友好！今天的新闻播报已经生成，请至 https://github.com/gaoyunzhi/telegram_news_2_pdf_bot/tree/master/pdf_result 领取。',
 		from_email=from_email,
-		to_emails=[to_email],
+		to_emails=to_emails,
 		)
 	sg.send(mail)
 
@@ -80,7 +80,7 @@ def loopImp():
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
 			os.system('rm pdf_result/' + x)
 	os.system('git add . && git commit -m commit && git push -u -f')
-	# sendEmail()
+	sendEmail()
 	excuted.add((now.month, now.day))
 
 def loop():

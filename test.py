@@ -9,4 +9,5 @@ def test():
 	# news_2_pdf.gen(news_source='bbc')
 	news_2_pdf.gen(news_source='nyt')
 	
-test()
+if __name__ == "__main__":
+	test()

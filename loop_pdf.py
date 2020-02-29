@@ -12,6 +12,7 @@ import os
 import datetime
 from datetime import date
 import sendgrid
+import sys
 from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
 
 TO_EXPORT = [

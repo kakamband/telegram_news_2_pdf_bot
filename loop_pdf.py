@@ -26,6 +26,10 @@ TO_EXPORT = [
 TIMEOUT = 40 * 60
 excuted = set()
 
+if 'skip' in str(sys.argv):
+	now = datetime.datetime.now()
+	excuted.add((now.month, now.day))
+
 with open('CREDENTIALS') as f:
 	CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
 

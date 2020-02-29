@@ -78,13 +78,13 @@ def loopImp():
 	files.append(f)
 	if 'social_justice_watch' == s:
 		files_en.append(f)
-	sendAll(channel_pdf, files[::-1])
-	sendAll(channel_en, files_en)
+	# sendAll(channel_pdf, files[::-1])
+	# sendAll(channel_en, files_en)
 	for x in os.listdir('pdf_result'):
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
 			os.system('rm pdf_result/' + x)
 	os.system('git add . && git commit -m commit && git push -u -f')
-	sendEmail()
+	# sendEmail()
 	excuted.add((now.month, now.day))
 
 def loop():

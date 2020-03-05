@@ -20,7 +20,6 @@ TO_EXPORT = [
 	'equality_and_rights', 
 	'pincongessence', 
 	'freedom_watch',
-	'reading_study',
 	'equality_and_rights',
 ]
 

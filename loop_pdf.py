@@ -16,12 +16,12 @@ import sys
 from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
 
 TO_EXPORT = [
-	'social_justice_watch', 
-	'equality_and_rights', 
-	'pincongessence', 
-	'freedom_watch',
-	'equality_and_rights',
 	'opinion_feed',
+	'equality_and_rights', 
+	'freedom_watch',
+	'social_justice_watch', 
+	'pincongessence',
+	'equality_and_rights', 
 ]
 
 TIMEOUT = 40 * 60

@@ -27,6 +27,10 @@ TO_EXPORT = [
 TIMEOUT = 40 * 60
 excuted = set()
 
+big_font_setting = '--paper-size b6 --pdf-page-margin-left 15 ' + \
+	'--pdf-page-margin-right 15 --pdf-page-margin-top 15 ' + \
+	'--pdf-page-margin-bottom 15'
+
 if 'skip' in str(sys.argv):
 	now = datetime.datetime.now()
 	excuted.add((now.month, now.day))
@@ -69,11 +73,15 @@ def loopImp():
 	files = []
 	files_en = []
 	for s in sources:
+		news_2_pdf.gen(news_source=s, filename_suffix='_大字版', additional_setting=big_font_setting)
 		f = news_2_pdf.gen(news_source=s)
 		files.append(f)
 		if '英文' in s:
 			files_en.append(f)
 	day = int(time.time() / 24 / 60 / 60)
+	for s in TO_EXPORT:
+		channel2pdf.gen(s)
+		channel2pdf.gen(s, filename_suffix='_大字版', additional_setting=big_font_setting)
 	s = TO_EXPORT[day % len(TO_EXPORT)]
 	f = channel2pdf.gen(s)
 	files.append(f)

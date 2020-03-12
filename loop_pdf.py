@@ -21,6 +21,7 @@ TO_EXPORT = [
 	'pincongessence', 
 	'freedom_watch',
 	'equality_and_rights',
+	'opinion_feed',
 ]
 
 TIMEOUT = 40 * 60

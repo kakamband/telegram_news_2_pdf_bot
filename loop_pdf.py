@@ -14,6 +14,7 @@ from datetime import date
 import sendgrid
 import sys
 from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
+import random
 
 TO_EXPORT = [
 	'opinion_feed',
@@ -95,6 +96,10 @@ def loopImp():
 	os.system('git add . && git commit -m commit && git push -u -f')
 	sendEmail()
 	excuted.add((now.month, now.day))
+	if random.random() < 0.1:
+		os.system('cd ~/Documents/projects/douban && p3 aggregate.py')
+	if random.random() < 0.006:
+		os.system('cd ~/Documents/projects/taiwan && p3 aggregate.py')
 
 def loop():
 	loopImp()

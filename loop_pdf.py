@@ -99,9 +99,9 @@ def send_pdf():
 def loopImp():
 	send_pdf()
 	if random.random() < 0.1:
-		os.system('cd ~/Documents/projects/douban && p3 aggregate.py')
+		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
 	if random.random() < 0.006:
-		os.system('cd ~/Documents/projects/taiwan && p3 aggregate.py')
+		os.system('cd ~/Documents/projects/taiwan && python3 aggregate.py')
 
 def loop():
 	loopImp()

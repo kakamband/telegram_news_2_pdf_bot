@@ -90,8 +90,8 @@ def send_pdf():
 	sendAll(channel_en, files_en)
 	for x in os.listdir('pdf_result'):
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
-			os.system('rm pdf_result/' + x)
-	os.system('git add . && git commit -m commit && git push -u -f > /dev/null 2>&1')
+			os.system('rm pdf_result/' + x + ' > /dev/null 2>&1')
+	os.system('git add . > /dev/null 2>&1 && git commit -m commit > /dev/null 2>&1 && git push -u -f > /dev/null 2>&1')
 	sendEmail()
 	excuted.add((now.month, now.day))
 

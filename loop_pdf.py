@@ -14,7 +14,6 @@ from datetime import date
 import sendgrid
 import sys
 from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
-import random
 
 TO_EXPORT = [
 	'opinion_feed',
@@ -27,6 +26,7 @@ TO_EXPORT = [
 
 TIMEOUT = 40 * 60
 excuted = set()
+last_excute = {'taiwan': 0, 'douban': 0}
 
 big_font_setting = '--paper-size b6 --pdf-page-margin-left 15 ' + \
 	'--pdf-page-margin-right 15 --pdf-page-margin-top 15 ' + \
@@ -95,13 +95,24 @@ def send_pdf():
 	sendEmail()
 	excuted.add((now.month, now.day))
 
+def send_telegram():
+	h = datetime.datetime.now().hour
+	if h > 9 or h < 8:
+		return
+
+	if time.time() - last_excute['taiwan'] > 10 * 60 * 12:
+		os.system('cd ~/Documents/projects/taiwan && python3 aggregate.py')
+		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
+		last_excute['taiwan'] = time.time()
+		last_excute['douban'] = time.time()
+	if time.time() - last_excute['douban'] > 10 * 60 * 2:
+		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
+		last_excute['douban'] = time.time()
+
 @log_on_fail(debug_group)
 def loopImp():
+	send_telegram()
 	send_pdf()
-	if random.random() < 0.1:
-		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
-	if random.random() < 0.006:
-		os.system('cd ~/Documents/projects/taiwan && python3 aggregate.py')
 
 def loop():
 	loopImp()

@@ -64,12 +64,10 @@ def sendEmail():
 		)
 	sg.send(mail)
 
-@log_on_fail(debug_group)
-def loopImp():
+def send_pdf():
 	now = datetime.datetime.now()
 	if (now.month, now.day) in excuted:
 		return
-	print('%d/%d %d:%d' % (now.month, now.day, now.hour, now.minute))
 	sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 	files = []
 	files_en = []
@@ -93,9 +91,13 @@ def loopImp():
 	for x in os.listdir('pdf_result'):
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
 			os.system('rm pdf_result/' + x)
-	os.system('git add . && git commit -m commit && git push -u -f')
+	os.system('git add . && git commit -m commit && git push -u -f > /dev/null 2>&1')
 	sendEmail()
 	excuted.add((now.month, now.day))
+
+@log_on_fail(debug_group)
+def loopImp():
+	send_pdf()
 	if random.random() < 0.1:
 		os.system('cd ~/Documents/projects/douban && p3 aggregate.py')
 	if random.random() < 0.006:

@@ -96,10 +96,6 @@ def send_pdf():
 	excuted.add((now.month, now.day))
 
 def send_telegram():
-	h = datetime.datetime.now().hour
-	if h > 9 or h < 8:
-		return
-
 	if time.time() - last_excute['taiwan'] > 10 * 60 * 12:
 		os.system('cd ~/Documents/projects/taiwan && python3 aggregate.py')
 		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')

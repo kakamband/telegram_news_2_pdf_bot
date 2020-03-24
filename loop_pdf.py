@@ -96,12 +96,12 @@ def send_pdf():
 	excuted.add((now.month, now.day))
 
 def send_telegram():
-	if time.time() - last_excute['taiwan'] > 10 * 60 * 12:
+	if time.time() - last_excute['taiwan'] > 60 * 60 * 12:
 		os.system('cd ~/Documents/projects/taiwan && python3 aggregate.py')
 		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
 		last_excute['taiwan'] = time.time()
 		last_excute['douban'] = time.time()
-	if time.time() - last_excute['douban'] > 10 * 60 * 2:
+	if time.time() - last_excute['douban'] > 60 * 60 * 2:
 		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
 		last_excute['douban'] = time.time()
 

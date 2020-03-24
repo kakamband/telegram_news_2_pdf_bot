@@ -122,7 +122,7 @@ def export(update, context):
 	if not channel_name:
 		return
 	channel_name = channel_name.split('/')[-1]
-	f = channel2pdf.gen(update.message.text)
+	f = channel2pdf.gen(channel_name)
 	update.message.reply_document(document=open(f, 'rb'), timeout=TIMEOUT)
 
 tele.dispatcher.add_handler(MessageHandler(Filters.text & Filters.private, export))

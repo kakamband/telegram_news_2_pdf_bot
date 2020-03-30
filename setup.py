@@ -8,8 +8,6 @@ def setup():
 	if 'kill' in str(sys.argv):
 		kill()
 		return 
-	
-	os.system('pip3 install --user -r requirements.txt --upgrade')
 	kill()
 
 	if 'debug' in str(sys.argv):

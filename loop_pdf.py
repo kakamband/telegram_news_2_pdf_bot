@@ -14,6 +14,7 @@ from datetime import date
 import sendgrid
 import sys
 from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
+from retrying import retry
 
 TO_EXPORT = [
 	'opinion_feed',
@@ -24,7 +25,7 @@ TO_EXPORT = [
 	'equality_and_rights', 
 ]
 
-TIMEOUT = 40 * 60
+TIMEOUT = 20 * 60
 excuted = set()
 last_excute = {'taiwan': 0, 'douban': 0}
 
@@ -44,12 +45,17 @@ debug_group = tele.bot.get_chat(-1001198682178)
 channel_pdf = tele.bot.get_chat(-1001371029868)
 channel_en = tele.bot.get_chat(-1001414226421)
 
+@retry(stop_max_attempt_number=2)
+def sendSingle(c, f):
+	try:
+		c.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
+	except Exception as e:
+		debug_group.send_message(str(e))
+		raise e
+
 def sendAll(c, files):
 	for f in files:
-		try:
-			c.send_document(document=open(f, 'rb'), timeout=TIMEOUT)
-		except Exception as e:
-			debug_group.send_message(str(e))
+		sendSingle(c, f)
 
 def sendEmail():
 	now = datetime.datetime.now()
@@ -86,6 +92,7 @@ def send_pdf():
 	files.append(f)
 	if 'social_justice_watch' == s:
 		files_en.append(f)
+	print('sending pdf')
 	sendAll(channel_pdf, files[::-1])
 	sendAll(channel_en, files_en)
 	for x in os.listdir('pdf_result'):

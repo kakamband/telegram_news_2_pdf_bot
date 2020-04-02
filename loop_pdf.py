@@ -16,13 +16,15 @@ import sys
 from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
 from retrying import retry
 
-TO_EXPORT = [
+channel_sources = [
 	'equality_and_rights', 
 	'freedom_watch',
 	'equality_and_rights', 
 	'social_justice_watch', 
 	'pincongessence',
 ]
+
+news_sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 
 TIMEOUT = 20 * 60
 excuted = set()
@@ -54,7 +56,10 @@ def sendSingle(c, f):
 
 def sendAll(c, files):
 	for f in files:
-		sendSingle(c, f)
+		try:
+			sendSingle(c, f)
+		except:
+			pass
 
 def sendEmail():
 	now = datetime.datetime.now()
@@ -70,7 +75,6 @@ def sendEmail():
 	sg.send(mail)
 
 def gen_files():
-	news_sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 	files = []
 	files_en = []
 	for s in news_sources:
@@ -80,9 +84,9 @@ def gen_files():
 		if '英文' in s:
 			files_en.append(f)
 	day = int(time.time() / 24 / 60 / 60)
-	for s in set(TO_EXPORT):
+	for s in set(channel_sources):
 		f = channel2pdf.gen(s)
-		if s == TO_EXPORT[day % len(TO_EXPORT)]:
+		if s == channel_sources[day % len(channel_sources)]:
 			files.append(f)
 			if 'social_justice_watch' == s:
 				files_en.append(f)
@@ -98,6 +102,8 @@ def send_pdf():
 		return
 	log('generating file')
 	files, files_en = gen_files()
+	log('commiting github')
+	os.system('git add . > /dev/null 2>&1 && git commit -m commit > /dev/null 2>&1 && nohup git push -u -f &')
 	log('sending pdf')
 	sendAll(channel_pdf, files[::-1])
 	sendAll(channel_en, files_en)
@@ -105,8 +111,6 @@ def send_pdf():
 	for x in os.listdir('pdf_result'):
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
 			os.system('rm pdf_result/' + x + ' > /dev/null 2>&1')
-	log('commiting github')
-	os.system('git add . > /dev/null 2>&1 && git commit -m commit > /dev/null 2>&1 && git push -u -f > /dev/null 2>&1')
 	log('sending email')
 	sendEmail()
 	log('pdf execution end')

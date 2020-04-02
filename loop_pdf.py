@@ -94,7 +94,8 @@ def gen_files():
 	return files, files_en
 
 def log(text):
-	print('%d:%d %s' % (datetime.datetime.now().hour, datetime.datetime.now().minute, text))
+	with open('nohup.out', 'a') as f:
+		f.write('%d:%d %s\n' % (datetime.datetime.now().hour, datetime.datetime.now().minute, text))
 
 def send_pdf():
 	now = datetime.datetime.now()

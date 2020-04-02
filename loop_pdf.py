@@ -17,12 +17,11 @@ from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
 from retrying import retry
 
 TO_EXPORT = [
-	'opinion_feed',
 	'equality_and_rights', 
 	'freedom_watch',
+	'equality_and_rights', 
 	'social_justice_watch', 
 	'pincongessence',
-	'equality_and_rights', 
 ]
 
 TIMEOUT = 20 * 60
@@ -84,32 +83,35 @@ def send_pdf():
 		if '英文' in s:
 			files_en.append(f)
 	day = int(time.time() / 24 / 60 / 60)
-	for s in TO_EXPORT:
-		channel2pdf.gen(s)
+	for s in set(TO_EXPORT):
+		f = channel2pdf.gen(s)
+		if s == TO_EXPORT[day % len(TO_EXPORT)]:
+			files.append(f)
+			if 'social_justice_watch' == s:
+				files_en.append(f)
 		channel2pdf.gen(s, filename_suffix='_大字版', additional_setting=big_font_setting)
-	s = TO_EXPORT[day % len(TO_EXPORT)]
-	f = channel2pdf.gen(s)
-	files.append(f)
-	if 'social_justice_watch' == s:
-		files_en.append(f)
-	print('sending pdf')
+	print('sending pdf', datetime.datetime.now().hour, datetime.datetime.now().minute)
 	sendAll(channel_pdf, files[::-1])
 	sendAll(channel_en, files_en)
+	print('removing old file', datetime.datetime.now().hour, datetime.datetime.now().minute)
 	for x in os.listdir('pdf_result'):
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
 			os.system('rm pdf_result/' + x + ' > /dev/null 2>&1')
+	print('commiting github', datetime.datetime.now().hour, datetime.datetime.now().minute)
 	os.system('git add . > /dev/null 2>&1 && git commit -m commit > /dev/null 2>&1 && git push -u -f > /dev/null 2>&1')
+	print('sending email', datetime.datetime.now().hour, datetime.datetime.now().minute)
 	sendEmail()
+	print('pdf send end', datetime.datetime.now().hour, datetime.datetime.now().minute)
 	excuted.add((now.month, now.day))
 
 def send_telegram():
 	if time.time() - last_excute['taiwan'] > 60 * 60 * 12:
-		os.system('cd ~/Documents/projects/taiwan && python3 aggregate.py')
-		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
+		os.system('cd ~/Documents/projects/douban && nohup python3 aggregate.py &')
+		os.system('cd ~/Documents/projects/taiwan && nohup python3 aggregate.py &')
 		last_excute['taiwan'] = time.time()
 		last_excute['douban'] = time.time()
 	if time.time() - last_excute['douban'] > 60 * 60 * 2:
-		os.system('cd ~/Documents/projects/douban && python3 aggregate.py')
+		os.system('cd ~/Documents/projects/douban && nohup python3 aggregate.py &')
 		last_excute['douban'] = time.time()
 
 @log_on_fail(debug_group)

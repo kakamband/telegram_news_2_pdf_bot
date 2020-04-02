@@ -69,14 +69,11 @@ def sendEmail():
 		)
 	sg.send(mail)
 
-def send_pdf():
-	now = datetime.datetime.now()
-	if (now.month, now.day) in excuted:
-		return
-	sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
+def gen_files():
+	news_sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 	files = []
 	files_en = []
-	for s in sources:
+	for s in news_sources:
 		news_2_pdf.gen(news_source=s, filename_suffix='_大字版', additional_setting=big_font_setting)
 		f = news_2_pdf.gen(news_source=s)
 		files.append(f)
@@ -90,18 +87,29 @@ def send_pdf():
 			if 'social_justice_watch' == s:
 				files_en.append(f)
 		channel2pdf.gen(s, filename_suffix='_大字版', additional_setting=big_font_setting)
-	print('sending pdf', datetime.datetime.now().hour, datetime.datetime.now().minute)
+	return files, files_en
+
+def log(text):
+	print('%d:%d %s' % (datetime.datetime.now().hour, datetime.datetime.now().minute, text))
+
+def send_pdf():
+	now = datetime.datetime.now()
+	if (now.month, now.day) in excuted:
+		return
+	log('generating file')
+	files, files_en = gen_files()
+	log('sending pdf')
 	sendAll(channel_pdf, files[::-1])
 	sendAll(channel_en, files_en)
-	print('removing old file', datetime.datetime.now().hour, datetime.datetime.now().minute)
+	log('removing old file')
 	for x in os.listdir('pdf_result'):
 		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
 			os.system('rm pdf_result/' + x + ' > /dev/null 2>&1')
-	print('commiting github', datetime.datetime.now().hour, datetime.datetime.now().minute)
+	log('commiting github')
 	os.system('git add . > /dev/null 2>&1 && git commit -m commit > /dev/null 2>&1 && git push -u -f > /dev/null 2>&1')
-	print('sending email', datetime.datetime.now().hour, datetime.datetime.now().minute)
+	log('sending email')
 	sendEmail()
-	print('pdf send end', datetime.datetime.now().hour, datetime.datetime.now().minute)
+	log('pdf execution end')
 	excuted.add((now.month, now.day))
 
 def send_telegram():

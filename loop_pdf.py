@@ -102,15 +102,15 @@ def send_pdf():
 		return
 	log('generating file')
 	files, files_en = gen_files()
+	log('removing old file')
+	for x in os.listdir('pdf_result'):
+		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
+			os.system('rm pdf_result/' + x + ' > /dev/null 2>&1')
 	log('commiting github')
 	os.system('git add . > /dev/null 2>&1 && git commit -m commit > /dev/null 2>&1 && nohup git push -u -f &')
 	log('sending pdf')
 	sendAll(channel_pdf, files[::-1])
 	sendAll(channel_en, files_en)
-	log('removing old file')
-	for x in os.listdir('pdf_result'):
-		if os.path.getmtime('pdf_result/' + x) < time.time() - 60 * 60 * 72:
-			os.system('rm pdf_result/' + x + ' > /dev/null 2>&1')
 	log('sending email')
 	sendEmail()
 	log('pdf execution end')

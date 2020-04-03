@@ -10,10 +10,8 @@ import channel2pdf
 import time
 import os
 import datetime
-from datetime import date
 import sendgrid
 import sys
-from sendgrid.helpers.mail import Content, Email, Mail, Attachment, To
 from retrying import retry
 
 channel_sources = [
@@ -61,19 +59,6 @@ def sendAll(c, files):
 		except:
 			pass
 
-def sendEmail():
-	now = datetime.datetime.now()
-	sg = sendgrid.SendGridAPIClient(CREDENTIALS['email_key'])
-	from_email = Email(CREDENTIALS['sender'])
-	to_emails = [To(x) for x in CREDENTIALS['to']]
-	content = Content("text/plain", "no content")
-	mail = Mail(subject='%s 【新闻播报】' % date.today().strftime("%m%d"),
-		html_content='书友好！今天的新闻播报已经生成，请至 https://github.com/gaoyunzhi/telegram_news_2_pdf_bot/tree/master/pdf_result 领取。',
-		from_email=from_email,
-		to_emails=to_emails,
-		)
-	sg.send(mail)
-
 def gen_files():
 	files = []
 	files_en = []
@@ -112,8 +97,6 @@ def send_pdf():
 	log('sending pdf')
 	sendAll(channel_pdf, files[::-1])
 	sendAll(channel_en, files_en)
-	log('sending email')
-	sendEmail()
 	log('pdf execution end')
 	excuted.add((now.month, now.day))
 

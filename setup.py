@@ -5,10 +5,9 @@ def kill():
 	os.system("ps aux | grep ython | grep loop_pdf | awk '{print $2}' | xargs kill -9")
 
 def setup():
-	if 'kill' in str(sys.argv):
-		kill()
-		return 
 	kill()
+	if 'kill' in str(sys.argv):
+		return 
 
 	if 'debug' in str(sys.argv):
 		os.system('python3 loop_pdf.py')

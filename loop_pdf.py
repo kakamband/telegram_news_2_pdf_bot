@@ -26,7 +26,7 @@ news_sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 
 TIMEOUT = 20 * 60
 excuted = set()
-last_excute = {'taiwan': 0, 'douban': 0}
+last_excute = {'taiwan': time.time(), 'douban': time.time()}
 
 big_font_setting = '--paper-size b6 --pdf-page-margin-left 15 ' + \
 	'--pdf-page-margin-right 15 --pdf-page-margin-top 15 ' + \

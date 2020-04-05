@@ -26,7 +26,7 @@ news_sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
 
 TIMEOUT = 20 * 60
 excuted = set()
-last_excute = {'taiwan': time.time(), 'douban': time.time()}
+last_excute = {'taiwan': time.time()}
 
 big_font_setting = '--paper-size b6 --pdf-page-margin-left 15 ' + \
 	'--pdf-page-margin-right 15 --pdf-page-margin-top 15 ' + \
@@ -102,13 +102,8 @@ def send_pdf():
 
 def send_telegram():
 	if time.time() - last_excute['taiwan'] > 60 * 60 * 12:
-		os.system('cd ~/Documents/projects/douban && nohup python3 aggregate.py &')
 		os.system('cd ~/Documents/projects/taiwan && nohup python3 aggregate.py &')
 		last_excute['taiwan'] = time.time()
-		last_excute['douban'] = time.time()
-	if time.time() - last_excute['douban'] > 60 * 60 * 2:
-		os.system('cd ~/Documents/projects/douban && nohup python3 aggregate.py &')
-		last_excute['douban'] = time.time()
 
 @log_on_fail(debug_group)
 def loopImp():

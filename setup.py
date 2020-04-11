@@ -14,7 +14,8 @@ def setup():
 	elif 'skip' in str(sys.argv):
 		os.system('nohup python3 loop_pdf.py skip &')
 	else:
-		os.system('nohup python3 loop_pdf.py &')
+		os.system('touch nohup.out')
+		os.system('nohup python3 loop_pdf.py & tail -F nohup.out')
 
 
 if __name__ == '__main__':

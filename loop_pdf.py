@@ -63,6 +63,7 @@ def gen_files():
 	files = []
 	files_en = []
 	for s in news_sources:
+		print(s)
 		news_2_pdf.gen(news_source=s, filename_suffix='_大字版', additional_setting=big_font_setting)
 		f = news_2_pdf.gen(news_source=s)
 		files.append(f)
@@ -70,6 +71,7 @@ def gen_files():
 			files_en.append(f)
 	day = int(time.time() / 24 / 60 / 60)
 	for s in set(channel_sources):
+		print(s)
 		f = channel2pdf.gen(s)
 		if s == channel_sources[day % len(channel_sources)]:
 			files.append(f)
@@ -110,8 +112,8 @@ def send_telegram():
 
 @log_on_fail(debug_group)
 def loopImp():
-	send_telegram()
 	send_pdf()
+	send_telegram()
 
 def loop():
 	print('loop')

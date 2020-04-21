@@ -22,7 +22,11 @@ channel_sources = [
 	'pincongessence',
 ]
 
-news_sources = ['bbc', 'nyt', 'bbc英文', 'nyt英文']
+news_sources = [
+	'bbc', 
+	'nyt', 
+	'bbc英文', 
+	'nyt英文']
 
 TIMEOUT = 20 * 60
 excuted = set()

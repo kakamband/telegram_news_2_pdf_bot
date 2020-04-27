@@ -109,9 +109,9 @@ def send_pdf():
 def send_telegram():
 	if time.time() - last_excute['taiwan'] > 60 * 60 * 12:
 		os.system('cd ~/Documents/projects/taiwan && nohup python3 aggregate.py &')
-		os.system('cd ~/Documents/projects/backup && python3 setup.py notail')
-		os.system('cd ~/Documents/projects/sg && python3 setup.py notail')
-		os.system('cd ~/Documents/projects/wb && python3 setup.py notail')
+		os.system('cd ~/Documents/projects/backup && nohup python3 setup.py notail &')
+		os.system('cd ~/Documents/projects/sg && nohup python3 setup.py notail &')
+		os.system('cd ~/Documents/projects/wb && nohup python3 setup.py notail &')
 		last_excute['taiwan'] = time.time()
 
 @log_on_fail(debug_group)

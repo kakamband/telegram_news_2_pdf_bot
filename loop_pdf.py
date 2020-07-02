@@ -15,11 +15,12 @@ import sys
 from retrying import retry
 
 channel_sources = [
-	'equality_and_rights', 
-	'freedom_watch',
+	'daily_feminist',
 	'equality_and_rights', 
 	'social_justice_watch', 
 	'pincongessence',
+	'feminist_watch',
+	'freedom_watch',
 ]
 
 news_sources = [

@@ -111,7 +111,6 @@ def send_telegram():
 	if time.time() - last_excute['time'] > 60 * 60 * 12:
 		os.system('cd ~/Documents/projects/backup && nohup python3 setup.py notail &')
 		os.system('cd ~/Documents/projects/sg && nohup python3 setup.py notail &')
-		os.system('cd ~/Documents/projects/wb && nohup python3 setup.py notail &')
 		last_excute['time'] = time.time()
 
 @log_on_fail(debug_group)

@@ -10,7 +10,6 @@ import channel2pdf
 import time
 import os
 import datetime
-import sendgrid
 import sys
 from retrying import retry
 

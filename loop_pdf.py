@@ -88,7 +88,8 @@ def log(text):
 	with open('nohup.out', 'a') as f:
 		f.write('%d:%d %s\n' % (datetime.datetime.now().hour, datetime.datetime.now().minute, text))
 
-def send_pdf():
+@log_on_fail(debug_group)
+def loopImp():
 	now = datetime.datetime.now()
 	if (now.month, now.day) in excuted:
 		return
@@ -105,17 +106,6 @@ def send_pdf():
 	sendAll(channel_en, files_en)
 	log('pdf execution end')
 	excuted.add((now.month, now.day))
-
-def send_telegram():
-	if time.time() - last_excute['time'] > 60 * 60 * 12:
-		os.system('cd ~/Documents/projects/backup && nohup python3 setup.py notail &')
-		os.system('cd ~/Documents/projects/sg && nohup python3 setup.py notail &')
-		last_excute['time'] = time.time()
-
-@log_on_fail(debug_group)
-def loopImp():
-	send_pdf()
-	send_telegram()
 
 def loop():
 	print('loop')

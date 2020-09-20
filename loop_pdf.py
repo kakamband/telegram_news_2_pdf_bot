@@ -48,7 +48,7 @@ debug_group = tele.bot.get_chat(-1001198682178)
 channel_pdf = tele.bot.get_chat(-1001371029868)
 channel_en = tele.bot.get_chat(-1001414226421)
 
-@retry(stop_max_attempt_number=2)
+@retry(stop_max_attempt_number=4)
 def sendSingle(c, f):
 	try:
 		c.send_document(document=open(f, 'rb'), timeout=TIMEOUT)

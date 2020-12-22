@@ -112,8 +112,6 @@ def loop():
 	loopImp()
 	threading.Timer(60 * 10, loop).start() 
 
-threading.Timer(1, loop).start()
-
 @log_on_fail(debug_group)
 def export(update, context):
 	channel_name = update.message.text
@@ -123,7 +121,5 @@ def export(update, context):
 	f = channel2pdf.gen(channel_name)
 	update.message.reply_document(document=open(f, 'rb'), timeout=TIMEOUT)
 
-tele.dispatcher.add_handler(MessageHandler(Filters.text & Filters.private, export))
-
-tele.start_polling()
-tele.idle()
+if __name__ == '__main__':
+	threading.Timer(1, loop).start()

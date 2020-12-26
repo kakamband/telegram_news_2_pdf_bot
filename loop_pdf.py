@@ -77,12 +77,14 @@ def gen_files():
 			files_en.append(f)
 	day = int(time.time() / 24 / 60 / 60)
 	for s in set(channel_sources):
+		print(s)
 		f = channel2pdf.gen(s)
 		if s == channel_sources[day % len(channel_sources)] or s == 'mengyshare':
 			files.append(f)
 			if 'social_justice_watch' == s:
 				files_en.append(f)
 		channel2pdf.gen(s, filename_suffix='_大字版', additional_setting=big_font_setting)
+		print(s, 'finished')
 	return files, files_en
 
 def log(text):

@@ -27,7 +27,8 @@ news_sources = [
 	'bbc', 
 	'nyt', 
 	'bbc英文', 
-	'nyt英文']
+	'nyt英文',
+	'报导者']
 
 TIMEOUT = 20 * 60
 excuted = set()

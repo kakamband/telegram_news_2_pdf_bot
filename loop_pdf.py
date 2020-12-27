@@ -69,7 +69,7 @@ def gen_files():
 	files = []
 	files_en = []
 	for s in news_sources:
-		print(s)
+		log(s)
 		news_2_pdf.gen(news_source=s, filename_suffix='_大字版', additional_setting=big_font_setting)
 		f = news_2_pdf.gen(news_source=s)
 		files.append(f)
@@ -77,14 +77,15 @@ def gen_files():
 			files_en.append(f)
 	day = int(time.time() / 24 / 60 / 60)
 	for s in set(channel_sources):
-		print(s)
+		log(s)
 		f = channel2pdf.gen(s)
 		if s == channel_sources[day % len(channel_sources)] or s == 'mengyshare':
 			files.append(f)
 			if 'social_justice_watch' == s:
 				files_en.append(f)
+		log(s + ' halfway')
 		channel2pdf.gen(s, filename_suffix='_大字版', additional_setting=big_font_setting)
-		print(s, 'finished')
+		log(s + ' finished')
 	return files, files_en
 
 def log(text):
